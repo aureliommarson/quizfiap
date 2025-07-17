@@ -469,7 +469,7 @@ function showStartButton() {
     quizStarted = false;
     const quizArea = document.getElementById('quiz-area');
     quizArea.innerHTML = `
-    <button class="block mx-auto mt-8 bg-red-600 hover:bg-red-800 text-white rounded-lg px-8 py-3 text-lg font-semibold transition" onclick="startQuiz()">Iniciar Quiz</button>
+    <button class="block mx-auto mt-8 bg-purple-600 hover:bg-purple-800 text-white rounded-lg px-8 py-3 text-lg font-semibold transition" onclick="startQuiz()">Iniciar Quiz</button>
   `;
     document.getElementById('timer').textContent = '';
 }
@@ -501,10 +501,10 @@ function renderQuestion() {
         const timeStr = formatTime(elapsed);
         history.push(`Tempo: ${timeStr} | Acertos: ${correctCount} | Erros: ${wrongCount}`);
         quizArea.innerHTML = `
-      <h2 class="text-2xl font-bold text-red-600 text-center">Revisão Terminada!</h2>
+      <h2 class="text-2xl font-bold text-purple-500 text-center">Revisão Terminada!</h2>
       <div class="score text-center mt-6 text-lg">Tempo gasto: <b>${timeStr}</b></div>
       <div class="score text-center mt-2 text-lg">Acertos: <b>${correctCount}</b> | Erros: <b>${wrongCount}</b></div>
-      <button class="restart-btn block mx-auto mt-6 bg-red-600 hover:bg-red-800 text-white rounded-lg px-8 py-3 text-lg font-semibold transition" onclick="startQuiz()">Recomeçar e Embaralhar</button>
+      <button class="restart-btn block mx-auto mt-6 bg-purple-600 hover:bg-purple-800 text-white rounded-lg px-8 py-3 text-lg font-semibold transition" onclick="startQuiz()">Recomeçar e Embaralhar</button>
     `;
         renderHistory();
         return;
@@ -517,25 +517,41 @@ function renderQuestion() {
     } else {
         fase = 'Fase 4';
     }
-    // Renderiza a pergunta e alternativas
-    quizArea.innerHTML = `
-    <div class="progress text-center mb-4 text-lg text-white">Pergunta ${current + 1} de ${questions.length} — ${fase}</div>
-    <div class="question mb-4 text-xl font-semibold text-white">${q.question}</div>
-    <ul class="alternatives list-none p-0 flex flex-col gap-2 sm:gap-3">
-      ${q.alternatives.map((alt, i) => `<li><button class="alt-btn w-full bg-zinc-800 text-white border-2 border-red-600 rounded-lg py-3 px-2 sm:px-4 text-base font-medium transition hover:bg-red-600 hover:text-white focus:outline-none" id="alt-btn-${i}" onclick="checkAnswer(${i})">${alt}</button></li>`).join('')}
-    </ul>
-    <div class="feedback my-4 font-bold text-red-600 text-center min-h-[24px]" id="feedback"></div>
-    <div id="next-btn-area"></div>
-  `;
-    // Remover classes de resposta de todos os botões (caso algum resíduo)
-    setTimeout(() => {
-        for (let i = 0; i < q.alternatives.length; i++) {
-            const btn = document.getElementById(`alt-btn-${i}`);
-            if (btn) {
-                btn.classList.remove('bg-green-200', 'text-green-900', 'border-green-600', 'bg-red-600', 'text-white');
-            }
-        }
-    }, 10);
+    // Limpa completamente o quiz-area antes de inserir novo conteúdo
+    quizArea.innerHTML = '';
+    // Cria o HTML da pergunta e alternativas
+    const progressDiv = document.createElement('div');
+    progressDiv.className = 'progress text-center mb-4 text-lg text-white';
+    progressDiv.textContent = `Pergunta ${current + 1} de ${questions.length} — ${fase}`;
+    quizArea.appendChild(progressDiv);
+
+    const questionDiv = document.createElement('div');
+    questionDiv.className = 'question mb-4 text-xl font-semibold text-white';
+    questionDiv.textContent = q.question;
+    quizArea.appendChild(questionDiv);
+
+    const ul = document.createElement('ul');
+    ul.className = 'alternatives list-none p-0 flex flex-col gap-2 sm:gap-3';
+    for (let i = 0; i < q.alternatives.length; i++) {
+        const li = document.createElement('li');
+        const btn = document.createElement('button');
+        btn.className = 'alt-btn w-full bg-zinc-800 text-white border-2 border-purple-600 rounded-lg py-3 px-2 sm:px-4 text-base font-medium transition hover:bg-purple-600 hover:text-white focus:outline-none';
+        btn.id = `alt-btn-${i}`;
+        btn.onclick = () => checkAnswer(i);
+        btn.textContent = q.alternatives[i];
+        li.appendChild(btn);
+        ul.appendChild(li);
+    }
+    quizArea.appendChild(ul);
+
+    const feedbackDiv = document.createElement('div');
+    feedbackDiv.className = 'feedback my-4 font-bold text-purple-500 text-center min-h-[24px]';
+    feedbackDiv.id = 'feedback';
+    quizArea.appendChild(feedbackDiv);
+
+    const nextBtnArea = document.createElement('div');
+    nextBtnArea.id = 'next-btn-area';
+    quizArea.appendChild(nextBtnArea);
 }
 
 function checkAnswer(selected) {
@@ -553,11 +569,10 @@ function checkAnswer(selected) {
         correctCount++;
         canAdvance = true;
         setTimeout(() => {
-            // Limpa classes antes de avançar
             for (let i = 0; i < q.alternatives.length; i++) {
                 const btn = document.getElementById(`alt-btn-${i}`);
                 if (btn) {
-                    btn.classList.remove('bg-green-200', 'text-green-900', 'border-green-600', 'bg-red-600', 'text-white');
+                    btn.classList.remove('bg-green-200', 'text-green-900', 'border-green-600', 'bg-purple-600', 'text-white', 'bg-red-600', 'border-red-600');
                 }
             }
             current++;
@@ -567,12 +582,15 @@ function checkAnswer(selected) {
         wrongCount++;
         feedback.textContent = 'Resposta errada! A correta está destacada.';
         correctBtn.classList.add('bg-green-200', 'text-green-900', 'border-green-600');
+        const selectedBtn = document.getElementById(`alt-btn-${selected}`);
+        if (selectedBtn) {
+            selectedBtn.classList.add('bg-red-600', 'text-white', 'border-red-600');
+        }
         setTimeout(() => {
-            // Limpa classes antes de avançar
             for (let i = 0; i < q.alternatives.length; i++) {
                 const btn = document.getElementById(`alt-btn-${i}`);
                 if (btn) {
-                    btn.classList.remove('bg-green-200', 'text-green-900', 'border-green-600', 'bg-red-600', 'text-white');
+                    btn.classList.remove('bg-green-200', 'text-green-900', 'border-green-600', 'bg-purple-600', 'text-white', 'bg-red-600', 'border-red-600');
                 }
             }
             current++;
@@ -627,7 +645,7 @@ function renderHistory() {
         historyDiv.innerHTML = '';
         return;
     }
-    historyDiv.innerHTML = '<div class="history-title text-red-600 font-bold mb-2">Histórico de Tempos:</div>' +
+    historyDiv.innerHTML = '<div class="history-title text-purple-500 font-bold mb-2">Histórico de Tempos:</div>' +
         history.map((t, i) => `Tentativa ${i + 1}: <b>${t}</b>`).join('<br>');
 }
 
