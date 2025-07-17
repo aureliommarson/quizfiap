@@ -537,7 +537,7 @@ function renderQuestion() {
     for (let i = 0; i < q.alternatives.length; i++) {
         const li = document.createElement('li');
         const btn = document.createElement('button');
-        btn.className = 'alt-btn w-full bg-zinc-800 text-white border-2 border-purple-600 rounded-lg py-3 px-2 sm:px-4 text-base font-medium transition hover:bg-purple-600 hover:text-white focus:outline-none';
+        btn.className = 'alt-btn w-full bg-zinc-800 text-white border-2 border-purple-600 rounded-lg py-3 px-2 sm:px-4 text-base font-medium transition';
         btn.id = `alt-btn-${i}`;
         btn.onclick = () => checkAnswer(i);
         btn.textContent = q.alternatives[i];
@@ -566,7 +566,7 @@ function checkAnswer(selected) {
         document.getElementById(`alt-btn-${i}`).disabled = true;
     }
     if (selected === q.correct) {
-        correctBtn.classList.add('bg-green-200', 'text-green-900', 'border-green-600');
+        correctBtn.classList.add('correct');
         feedback.textContent = 'Resposta correta!';
         correctCount++;
         canAdvance = true;
@@ -574,7 +574,7 @@ function checkAnswer(selected) {
             for (let i = 0; i < q.alternatives.length; i++) {
                 const btn = document.getElementById(`alt-btn-${i}`);
                 if (btn) {
-                    btn.className = 'alt-btn w-full bg-zinc-800 text-white border-2 border-purple-600 rounded-lg py-3 px-2 sm:px-4 text-base font-medium transition hover:bg-purple-600 hover:text-white focus:outline-none';
+                    btn.className = 'alt-btn w-full bg-zinc-800 text-white border-2 border-purple-600 rounded-lg py-3 px-2 sm:px-4 text-base font-medium transition';
                 }
             }
             current++;
@@ -583,16 +583,16 @@ function checkAnswer(selected) {
     } else {
         wrongCount++;
         feedback.textContent = 'Resposta errada! A correta está destacada.';
-        correctBtn.classList.add('bg-green-200', 'text-green-900', 'border-green-600');
+        correctBtn.classList.add('correct');
         const selectedBtn = document.getElementById(`alt-btn-${selected}`);
         if (selectedBtn) {
-            selectedBtn.classList.add('bg-purple-600', 'text-white', 'border-purple-600');
+            selectedBtn.classList.add('wrong');
         }
         setTimeout(() => {
             for (let i = 0; i < q.alternatives.length; i++) {
                 const btn = document.getElementById(`alt-btn-${i}`);
                 if (btn) {
-                    btn.className = 'alt-btn w-full bg-zinc-800 text-white border-2 border-purple-600 rounded-lg py-3 px-2 sm:px-4 text-base font-medium transition hover:bg-purple-600 hover:text-white focus:outline-none';
+                    btn.className = 'alt-btn w-full bg-zinc-800 text-white border-2 border-purple-600 rounded-lg py-3 px-2 sm:px-4 text-base font-medium transition';
                 }
             }
             current++;
