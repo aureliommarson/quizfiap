@@ -571,12 +571,6 @@ function checkAnswer(selected) {
         correctCount++;
         canAdvance = true;
         setTimeout(() => {
-            for (let i = 0; i < q.alternatives.length; i++) {
-                const btn = document.getElementById(`alt-btn-${i}`);
-                if (btn) {
-                    btn.className = 'alt-btn w-full bg-zinc-800 text-white border-2 border-purple-600 rounded-lg py-3 px-2 sm:px-4 text-base font-medium transition';
-                }
-            }
             current++;
             renderQuestion();
         }, 700);
@@ -589,12 +583,6 @@ function checkAnswer(selected) {
             selectedBtn.classList.add('wrong');
         }
         setTimeout(() => {
-            for (let i = 0; i < q.alternatives.length; i++) {
-                const btn = document.getElementById(`alt-btn-${i}`);
-                if (btn) {
-                    btn.className = 'alt-btn w-full bg-zinc-800 text-white border-2 border-purple-600 rounded-lg py-3 px-2 sm:px-4 text-base font-medium transition';
-                }
-            }
             current++;
             renderQuestion();
         }, 5000);

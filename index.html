@@ -6,6 +6,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QUIZ - 1TDS - QUIZ FASE 3 E 4 - 2025</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Remove hover roxo em mobile, mas mantém verde/vermelho */
+        @media (hover: none) and (pointer: coarse) {
+            .alt-btn:not(.correct):not(.wrong):hover {
+                background: inherit !important;
+                color: inherit !important;
+                border-color: inherit !important;
+            }
+        }
+
+        /* Mais especificidade para garantir que as cores aparecem */
+        button.alt-btn.correct {
+            background: #bbf7d0 !important;
+            color: #166534 !important;
+            border-color: #16a34a !important;
+        }
+
+        button.alt-btn.wrong {
+            background: #fca5a5 !important;
+            color: #991b1b !important;
+            border-color: #dc2626 !important;
+        }
+    </style>
 </head>
 
 <body class="bg-zinc-900 text-white min-h-screen">
