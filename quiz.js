@@ -517,11 +517,12 @@ function renderQuestion() {
     } else {
         fase = 'Fase 4';
     }
+    // Renderiza a pergunta e alternativas
     quizArea.innerHTML = `
     <div class="progress text-center mb-4 text-lg text-white">Pergunta ${current + 1} de ${questions.length} — ${fase}</div>
     <div class="question mb-4 text-xl font-semibold text-white">${q.question}</div>
-    <ul class="alternatives list-none p-0">
-      ${q.alternatives.map((alt, i) => `<li class="mb-3"><button class="alt-btn w-full bg-zinc-800 text-white border-2 border-red-600 rounded-lg py-3 px-4 text-base font-medium transition hover:bg-red-600 hover:text-white focus:outline-none" id="alt-btn-${i}" onclick="checkAnswer(${i})">${alt}</button></li>`).join('')}
+    <ul class="alternatives list-none p-0 flex flex-col gap-2 sm:gap-3">
+      ${q.alternatives.map((alt, i) => `<li><button class="alt-btn w-full bg-zinc-800 text-white border-2 border-red-600 rounded-lg py-3 px-2 sm:px-4 text-base font-medium transition hover:bg-red-600 hover:text-white focus:outline-none" id="alt-btn-${i}" onclick="checkAnswer(${i})">${alt}</button></li>`).join('')}
     </ul>
     <div class="feedback my-4 font-bold text-red-600 text-center min-h-[24px]" id="feedback"></div>
     <div id="next-btn-area"></div>
@@ -531,7 +532,7 @@ function renderQuestion() {
         for (let i = 0; i < q.alternatives.length; i++) {
             const btn = document.getElementById(`alt-btn-${i}`);
             if (btn) {
-                btn.classList.remove('bg-green-200', 'text-green-900', 'border-green-600');
+                btn.classList.remove('bg-green-200', 'text-green-900', 'border-green-600', 'bg-red-600', 'text-white');
             }
         }
     }, 10);
@@ -552,6 +553,13 @@ function checkAnswer(selected) {
         correctCount++;
         canAdvance = true;
         setTimeout(() => {
+            // Limpa classes antes de avançar
+            for (let i = 0; i < q.alternatives.length; i++) {
+                const btn = document.getElementById(`alt-btn-${i}`);
+                if (btn) {
+                    btn.classList.remove('bg-green-200', 'text-green-900', 'border-green-600', 'bg-red-600', 'text-white');
+                }
+            }
             current++;
             renderQuestion();
         }, 700);
@@ -560,6 +568,13 @@ function checkAnswer(selected) {
         feedback.textContent = 'Resposta errada! A correta está destacada.';
         correctBtn.classList.add('bg-green-200', 'text-green-900', 'border-green-600');
         setTimeout(() => {
+            // Limpa classes antes de avançar
+            for (let i = 0; i < q.alternatives.length; i++) {
+                const btn = document.getElementById(`alt-btn-${i}`);
+                if (btn) {
+                    btn.classList.remove('bg-green-200', 'text-green-900', 'border-green-600', 'bg-red-600', 'text-white');
+                }
+            }
             current++;
             renderQuestion();
         }, 5000);
