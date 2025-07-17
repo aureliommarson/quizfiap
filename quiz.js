@@ -517,9 +517,7 @@ function renderQuestion() {
     } else {
         fase = 'Fase 4';
     }
-    // Limpa completamente o quiz-area antes de inserir novo conteúdo
     quizArea.innerHTML = '';
-    // Cria o HTML da pergunta e alternativas
     const progressDiv = document.createElement('div');
     progressDiv.className = 'progress text-center mb-4 text-lg text-white';
     progressDiv.textContent = `Pergunta ${current + 1} de ${questions.length} — ${fase}`;
@@ -572,7 +570,7 @@ function checkAnswer(selected) {
             for (let i = 0; i < q.alternatives.length; i++) {
                 const btn = document.getElementById(`alt-btn-${i}`);
                 if (btn) {
-                    btn.classList.remove('bg-green-200', 'text-green-900', 'border-green-600', 'bg-purple-600', 'text-white', 'bg-red-600', 'border-red-600');
+                    btn.className = 'alt-btn w-full bg-zinc-800 text-white border-2 border-purple-600 rounded-lg py-3 px-2 sm:px-4 text-base font-medium transition hover:bg-purple-600 hover:text-white focus:outline-none';
                 }
             }
             current++;
@@ -584,13 +582,13 @@ function checkAnswer(selected) {
         correctBtn.classList.add('bg-green-200', 'text-green-900', 'border-green-600');
         const selectedBtn = document.getElementById(`alt-btn-${selected}`);
         if (selectedBtn) {
-            selectedBtn.classList.add('bg-red-600', 'text-white', 'border-red-600');
+            selectedBtn.classList.add('bg-purple-600', 'text-white', 'border-purple-600');
         }
         setTimeout(() => {
             for (let i = 0; i < q.alternatives.length; i++) {
                 const btn = document.getElementById(`alt-btn-${i}`);
                 if (btn) {
-                    btn.classList.remove('bg-green-200', 'text-green-900', 'border-green-600', 'bg-purple-600', 'text-white', 'bg-red-600', 'border-red-600');
+                    btn.className = 'alt-btn w-full bg-zinc-800 text-white border-2 border-purple-600 rounded-lg py-3 px-2 sm:px-4 text-base font-medium transition hover:bg-purple-600 hover:text-white focus:outline-none';
                 }
             }
             current++;
