@@ -526,6 +526,15 @@ function renderQuestion() {
     <div class="feedback my-4 font-bold text-red-600 text-center min-h-[24px]" id="feedback"></div>
     <div id="next-btn-area"></div>
   `;
+    // Remover classes de resposta de todos os botões (caso algum resíduo)
+    setTimeout(() => {
+        for (let i = 0; i < q.alternatives.length; i++) {
+            const btn = document.getElementById(`alt-btn-${i}`);
+            if (btn) {
+                btn.classList.remove('bg-green-200', 'text-green-900', 'border-green-600');
+            }
+        }
+    }, 10);
 }
 
 function checkAnswer(selected) {
