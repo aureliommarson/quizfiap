@@ -493,6 +493,10 @@ function startQuiz() {
 
 function renderQuestion() {
     const quizArea = document.getElementById('quiz-area');
+    // Remove todo o conteúdo anterior para garantir que nada persista
+    while (quizArea.firstChild) {
+        quizArea.removeChild(quizArea.firstChild);
+    }
     canAdvance = false;
     firstTry = true;
     if (current >= questions.length) {
@@ -517,7 +521,7 @@ function renderQuestion() {
     } else {
         fase = 'Fase 4';
     }
-    quizArea.innerHTML = '';
+    // Cria o HTML da pergunta e alternativas do zero
     const progressDiv = document.createElement('div');
     progressDiv.className = 'progress text-center mb-4 text-lg text-white';
     progressDiv.textContent = `Pergunta ${current + 1} de ${questions.length} — ${fase}`;
